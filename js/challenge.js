@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     minusButton.addEventListener('click', () => {
-        if (counter.textContent = '0') return null
+        if (counter.textContent === '0') return null
         counter.textContent = Number(counter.textContent) - 1;
     });
     
@@ -29,9 +29,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!interval) {
             interval = setInterval(() => {
                 counter.textContent = Number(counter.textContent) + 1
-            }, 1000)
+            }, 1000);
+
             buttonArray.forEach(button => button.disabled = false)
             pauseButton.textContent = 'pause';
+
         } else if (interval) {
             clearInterval(interval);
             interval = null;
