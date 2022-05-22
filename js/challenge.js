@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const allButtons = document.querySelectorAll('button');
     let intervalId; //variable to store a setInterval function 
 
-    //Invoke function once when the DOM loads to set off the counter.
+    //Invoke function once the DOM loads to set off the counter.
     counterControl(); 
 
     //Decrement counter by 1
@@ -22,13 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
         counter.textContent = Number(counter.textContent) + 1
     });
     
-   /*  const li = document.createElement('li')                                 //TODO: FIGURE THIS OUT
-    li.setAttribute('data-likes', 0)
-    li.setAttribute('data-current-number', `${counter.textContent}`)
-    heartButton.addEventListener('click', () => {
-        document.querySelector('ul').appendChild(li)
-        li.textContent = `${counter.textContent} has been liked ${li.dataset.likes++} times`
-    }) */
+    heartButton.addEventListener('click', addLikes) 
 
     //Pause counter
     pauseButton.addEventListener('click', counterControl);
@@ -49,6 +43,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             buttonArray.forEach(button => button.disabled = false)
             pauseButton.textContent = 'pause';
+            if (document.getElementById('restart')) {
+                document.getElementById('restart').remove();
+            }
 
         } else if (intervalId) {
             clearInterval(intervalId);
@@ -59,6 +56,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             })
             pauseButton.textContent = 'resume';
+            
+            const restart = document.createElement('button');
+            restart.setAttribute('id', 'restart')
+            restart.textContent = 'restart'
+            pauseButton.insertAdjacentElement('afterend', restart);
+
+            restart.addEventListener('click', () => location.reload());
         };
 
     };
@@ -73,6 +77,24 @@ document.addEventListener('DOMContentLoaded', () => {
         
         commentForm.reset();
     };
+
+
+
+    const list = []
+    const li = document.createElement('li')
+    function addLikes() {
+        let currentNumber = Number(counter.textContent)
+        const found = list.some(obj => obj.id === currentNumber)
+        if (!found) {
+            list.push({id: currentNumber, likes: 0})            
+            li.textContent = `${currentNumber} has been liked 1 time`
+            document.querySelector('.likes').appendChild(li)
+        } else {
+            let num = list.find(obj => obj.id === currentNumber)
+            num.likes = Number(num.likes) + 1
+            li.textContent = `${currentNumber} has been liked ${num.likes} times`
+            document.querySelector('.likes').appendChild(li)
+        }
+    }
 })
 
-///html/body/ul/li[3]/text()
